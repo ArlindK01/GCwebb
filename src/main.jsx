@@ -399,12 +399,14 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error('Could not send contact form');
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.error || 'Could not send contact form');
       }
 
       setFormStatus('success');
       formElement.reset();
-    } catch {
+    } catch (error) {
+      console.error(error);
       setFormStatus('error');
     }
   }

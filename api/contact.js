@@ -68,7 +68,10 @@ module.exports = async function handler(req, res) {
   });
 
   if (error) {
-    return res.status(400).json({ error: 'Could not send email' });
+    console.error('Resend email error:', error);
+    return res.status(400).json({
+      error: error.message || 'Could not send email',
+    });
   }
 
   return res.status(200).json({ ok: true });
