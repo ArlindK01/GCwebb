@@ -304,7 +304,7 @@ function App() {
   const formMessage = useMemo(() => {
     if (formStatus === 'loading') return 'Skickar din förfrågan...';
     if (formStatus === 'success') return 'Tack. Vi återkommer så snabbt vi kan.';
-    if (formStatus === 'error') return 'Fyll i namn, telefon och vad du vill ha hjälp med.';
+    if (formStatus === 'error') return 'Det gick inte att skicka just nu. Kontrollera fälten eller ring oss direkt.';
     return '';
   }, [formStatus]);
 
@@ -379,9 +379,10 @@ function App() {
     return () => ctx.revert();
   }, [isWorkPage, activeServicePage]);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const hasRequired = form.get('name') && form.get('lastName') && form.get('email') && form.get('phone') && form.get('interest') && form.get('message');
 
     if (!hasRequired) {
@@ -390,21 +391,22 @@ function App() {
     }
 
     setFormStatus('loading');
-    const subject = `Offertförfrågan - ${form.get('interest')}`;
-    const body = [
-      'Ny förfrågan från hemsidan',
-      '',
-      `Namn: ${form.get('name')} ${form.get('lastName')}`,
-      `E-post: ${form.get('email')}`,
-      `Telefon: ${form.get('phone')}`,
-      `Intresserad av: ${form.get('interest')}`,
-      '',
-      'Meddelande:',
-      form.get('message'),
-    ].join('\n');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(form)),
+      });
 
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.setTimeout(() => setFormStatus('success'), 650);
+      if (!response.ok) {
+        throw new Error('Could not send contact form');
+      }
+
+      setFormStatus('success');
+      formElement.reset();
+    } catch {
+      setFormStatus('error');
+    }
   }
 
   return (

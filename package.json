@@ -8,9 +8,9 @@
     "@phosphor-icons/react": "latest",
     "@vitejs/plugin-react": "latest",
     "gsap": "latest",
-    "vite": "latest",
     "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {}
+    "react-dom": "latest",
+    "resend": "^6.12.3",
+    "vite": "latest"
+  }
 }
