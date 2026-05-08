@@ -578,8 +578,8 @@ h1 {
 }
 
 .custom-service-card-long-title h3 {
-  font-size: clamp(1.25rem, 1.65vw, 1.58rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(1.08rem, 1.25vw, 1.3rem);
+  letter-spacing: -0.01em;
 }
 
 .custom-service-card p {
