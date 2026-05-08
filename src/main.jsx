@@ -494,7 +494,7 @@ function App() {
           </div>
           <div className="custom-service-grid">
             {services.map((service) => (
-              <article className="custom-service-card" key={service.title}>
+              <article className={service.slug === 'tjanst-tradgardsskotsel' ? 'custom-service-card custom-service-card-long-title' : 'custom-service-card'} key={service.title}>
                 <div>
                   <h3>{service.title}</h3>
                   <p>{service.text}</p>

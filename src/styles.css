@@ -577,6 +577,11 @@ h1 {
   letter-spacing: -0.035em;
 }
 
+.custom-service-card-long-title h3 {
+  font-size: clamp(1.25rem, 1.65vw, 1.58rem);
+  letter-spacing: -0.02em;
+}
+
 .custom-service-card p {
   margin: 0;
   color: rgba(36, 54, 46, 0.72);
