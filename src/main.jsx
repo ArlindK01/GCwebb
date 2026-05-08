@@ -390,6 +390,20 @@ function App() {
     }
 
     setFormStatus('loading');
+    const subject = `Offertförfrågan - ${form.get('interest')}`;
+    const body = [
+      'Ny förfrågan från hemsidan',
+      '',
+      `Namn: ${form.get('name')} ${form.get('lastName')}`,
+      `E-post: ${form.get('email')}`,
+      `Telefon: ${form.get('phone')}`,
+      `Intresserad av: ${form.get('interest')}`,
+      '',
+      'Meddelande:',
+      form.get('message'),
+    ].join('\n');
+
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.setTimeout(() => setFormStatus('success'), 650);
   }
 
