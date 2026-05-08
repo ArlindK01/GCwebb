@@ -545,6 +545,7 @@ function App() {
             </div>
             <div className="price-body">
               <h3>Fönsterservice med RUT-avdrag</h3>
+              <span className="price-prefix">Från</span>
               <strong className="price-amount">1 399 kr<small>/mån</small></strong>
               <div className="price-rule" />
               <ul>
