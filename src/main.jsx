@@ -24,6 +24,7 @@ import {
   Snowflake,
   Sparkle,
   SquareSplitHorizontal,
+  Star,
   TiktokLogo,
   Tree,
 } from '@phosphor-icons/react';
@@ -33,7 +34,8 @@ import './styles.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const phone = '073-579 38 02';
+const phone = '073-749-33-12';
+const phoneHref = `tel:${phone.replace(/[^\d+]/g, '')}`;
 const email = 'info@kgtomtservice.se';
 const socialLinks = {
   facebook: 'https://www.facebook.com/',
@@ -138,19 +140,19 @@ const flexibleTabs = {
   Gräsklippning: {
     title: 'Gräsklippning',
     text: 'Boka gräsklippning i Västerås vid behov utan bindningstid.',
-    price: '429 kr/tim',
+    price: '349 kr/timme efter RUT',
     points: ['Gräsklippning', 'Busktrimning', 'Ogräsborttagning', 'Gräs och löv tas bort efter jobb'],
   },
   Komplett: {
     title: 'Komplett',
     text: 'Samlad tomtskötsel och fastighetsnära utomhusservice i Västmanland.',
-    price: 'Offert',
+    price: '419 kr/timme efter RUT',
     points: ['Tomtgenomgång', 'Skötselplan', 'Återkommande service', 'Hantering av RUT-avdrag'],
   },
   Fönsterputs: {
     title: 'Fönsterputs',
-    text: 'Enstaka fönsterputs i Västerås när fönstren behöver bli klara igen.',
-    price: 'Offert',
+    text: 'Enstaka fönsterputs i Västerås när fönstren behöver bli klara igen. Faktureras per påbörjad timme.',
+    price: '349 kr/timme efter RUT',
     points: ['Invändigt och utvändigt', 'Professionell utrustning', 'Noggrann detaljkontroll', 'Bokas vid behov'],
   },
 };
@@ -187,10 +189,33 @@ const faqs = [
   ['Utför ni snöskottning under vintern?', 'Ja, vi erbjuder snöskottning och vinterservice i Västerås och Västmanland för entréer, gångar, uppfarter och andra viktiga ytor.'],
 ];
 
+const reviews = [
+  {
+    name: 'Admir Beka',
+    text: 'Otroligt nöjd med både bemötandet och resultatet.\n\nProffsig och noggrann.\n\nRekommenderas starkt!',
+  },
+  {
+    name: 'Asta Thor',
+    text: 'Jag är mycket nöjd med KGTomt & Fönsterservice. Arbetet utfördes noggrant och professionellt, och resultatet blev precis som jag önskade. Trevligt bemötande, bra kommunikation och hög kvalitet från start till mål. Rekommenderas varmt.',
+  },
+  {
+    name: 'Elin Karlsson',
+    text: 'Väldigt nöjd med resultatet. Arbetet utfördes snabbt, noggrant och med ett trevligt bemötande. Rekommenderas verkligen!',
+  },
+  {
+    name: 'Marcus Lindgren',
+    text: 'Bra service från första kontakt till färdigt arbete. Tydlig kommunikation, professionellt utfört och ett resultat som överträffade mina förväntningar.',
+  },
+  {
+    name: 'Sara Holm',
+    text: 'Jag är supernöjd med hjälpen jag fick. Punktliga, noggranna och väldigt trevliga. Kommer definitivt anlita KGTomt & Fönsterservice igen.',
+  },
+];
+
 const contactItems = [
   ['Telefon', phone, Phone],
   ['E post', email, EnvelopeSimple],
-  ['Öppettider', 'Mån till Fre 10:00 till 21:00', Clock],
+  ['Öppettider', 'Mån till Fre 08:00 till 19:00', Clock],
   ['Område', 'Västerås och hela Västmanland', MapPin],
 ];
 
@@ -291,6 +316,7 @@ function App() {
   const [currentHash, setCurrentHash] = useState(() => window.location.hash);
   const [activeTab, setActiveTab] = useState('Gräsklippning');
   const [openFaq, setOpenFaq] = useState(0);
+  const [activeReview, setActiveReview] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [formStatus, setFormStatus] = useState('idle');
   const activeService = flexibleTabs[activeTab];
@@ -298,6 +324,9 @@ function App() {
   const [priceValue, priceUnit] = activeService.price.includes(' ')
     ? activeService.price.split(/ (.+)/)
     : [activeService.price, ''];
+  const priceUnitLines = priceUnit.includes(' efter RUT')
+    ? priceUnit.replace(' efter RUT', '\nefter RUT').split('\n')
+    : [priceUnit];
   const isWorkPage = currentHash === workPageHash;
   const activeServicePage = servicePages.find((service) => currentHash === `#${service.slug}`);
 
@@ -307,6 +336,8 @@ function App() {
     if (formStatus === 'error') return 'Det gick inte att skicka just nu. Kontrollera fälten eller ring oss direkt.';
     return '';
   }, [formStatus]);
+  const showPreviousReview = () => setActiveReview((index) => (index === 0 ? reviews.length - 1 : index - 1));
+  const showNextReview = () => setActiveReview((index) => (index + 1) % reviews.length);
 
   useLayoutEffect(() => {
     function syncPageWithHash() {
@@ -427,7 +458,7 @@ function App() {
           <PlayCircle size={22} weight="regular" />
           Se oss i arbete
         </a>
-        <a className="nav-call" href={`tel:${phone.replaceAll(' ', '')}`} onClick={() => setMenuOpen(false)}>
+        <a className="nav-call" href={phoneHref} onClick={() => setMenuOpen(false)}>
           <Phone size={18} weight="bold" />
           Ring oss
         </a>
@@ -586,7 +617,11 @@ function App() {
           </div>
           <div className="tab-price">
             <strong>{priceValue}</strong>
-            {priceUnit && <span>{priceUnit}</span>}
+            {priceUnit && (
+              <span className="tab-price-unit">
+                {priceUnitLines.map((line) => <span key={line}>{line}</span>)}
+              </span>
+            )}
           </div>
           <h3>{activeService.title}</h3>
           <p>{activeService.text}</p>
@@ -656,6 +691,50 @@ function App() {
         </div>
       </section>
 
+      <section className="reviews reveal" aria-label="Kundomdömen">
+        <div className="reviews-heading">
+          <p className="kicker">Recensioner</p>
+          <h2>Vad våra kunder säger</h2>
+        </div>
+        <div className="reviews-carousel">
+          <button className="review-arrow" type="button" onClick={showPreviousReview} aria-label="Visa föregående recension">
+            <ArrowLeft size={22} weight="bold" />
+          </button>
+          <div className="reviews-window">
+            <div className="reviews-track" style={{ transform: `translateX(-${activeReview * 100}%)` }}>
+              {reviews.map((review) => (
+                <article className="review-card" key={review.name}>
+                  <div className="review-meta">
+                    <span className="review-stars" aria-label="5 av 5">
+                      {Array.from({ length: 5 }).map((_, index) => <Star key={index} size={17} weight="fill" />)}
+                    </span>
+                    <h3>{review.name}</h3>
+                  </div>
+                  <blockquote>
+                    {review.text.split('\n\n').map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  </blockquote>
+                </article>
+              ))}
+            </div>
+          </div>
+          <button className="review-arrow" type="button" onClick={showNextReview} aria-label="Visa nästa recension">
+            <ArrowRight size={22} weight="bold" />
+          </button>
+        </div>
+        <div className="review-dots" aria-label="Välj recension">
+          {reviews.map((review, index) => (
+            <button
+              key={review.name}
+              type="button"
+              className={activeReview === index ? 'active' : ''}
+              onClick={() => setActiveReview(index)}
+              aria-label={`Visa recension från ${review.name}`}
+              aria-current={activeReview === index ? 'true' : undefined}
+            />
+          ))}
+        </div>
+      </section>
+
       <section id="kontakt" className="contact">
         <div className="contact-grid reveal">
           <aside className="contact-panel">
@@ -668,7 +747,7 @@ function App() {
             <dl className="contact-details">
               <div>
                 <dt>Telefon</dt>
-                <dd><a href={`tel:${phone.replaceAll(' ', '')}`}>{phone}</a></dd>
+                <dd><a href={phoneHref}>{phone}</a></dd>
               </div>
               <div>
                 <dt>E post</dt>
@@ -676,7 +755,7 @@ function App() {
               </div>
               <div>
                 <dt>Öppettider</dt>
-                <dd>Mån till Fre 10:00 till 21:00</dd>
+                <dd>Mån till Fre 08:00 till 19:00</dd>
               </div>
               <div>
                 <dt>Område</dt>
@@ -700,7 +779,7 @@ function App() {
             <label>Intresserad av *
               <select name="interest" defaultValue="" required>
                 <option value="" disabled>Välj tjänst...</option>
-                {['Gräsklippning', 'Fönsterputs', 'Tomtskötsel', 'Trädgårdsskötsel', 'Häckklippning', 'Snöskottning', 'Vinterservice', 'RUT-avdrag', 'Paket och abonnemang', 'Annat'].map((option) => (
+                {['Gräsklippning', 'Fönsterputs', 'Tomtskötsel', 'Häckklippning', 'Snöskottning', 'Vinterservice', 'Paket och abonnemang', 'Annat'].map((option) => (
                   <option key={option}>{option}</option>
                 ))}
               </select>
@@ -736,9 +815,9 @@ function App() {
         </div>
         <div className="footer-contact">
           <h3>Kontakt</h3>
-          <a href={`tel:${phone.replaceAll(' ', '')}`}>{phone}</a>
+          <a href={phoneHref}>{phone}</a>
           <a href={`mailto:${email}`}>{email}</a>
-          <span>Mån till Fre 10:00 till 21:00</span>
+          <span>Mån till Fre 08:00 till 19:00</span>
         </div>
         <p className="copyright">© 2026 KG Tomt & Fönsterservice. Alla rättigheter förbehållna.</p>
       </footer>
