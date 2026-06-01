@@ -410,6 +410,17 @@ function App() {
     return () => ctx.revert();
   }, [isWorkPage, activeServicePage]);
 
+  useLayoutEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return undefined;
+
+    const timer = window.setInterval(() => {
+      setActiveReview((index) => (index + 1) % reviews.length);
+    }, 5200);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   async function handleSubmit(event) {
     event.preventDefault();
     const formElement = event.currentTarget;
