@@ -13,7 +13,6 @@ import {
   HouseLine,
   InstagramLogo,
   Leaf,
-  List,
   MapPin,
   Percent,
   Phone,
@@ -112,47 +111,38 @@ const servicePages = [
   },
 ];
 
-const grundservicePrices = ['0 till 399 kvm: 1 299 kr', '400 till 699 kvm: 1 990 kr', '700 till 999 kvm: 2 690 kr', '1000 till 1500 kvm: 3 590 kr'];
-
 const packages = [
   {
     name: 'Grundservice',
     type: 'Gräsklippning',
-    price: 'Från 1 299 kr',
-    rows: grundservicePrices,
     points: [
-      '1 till 2 gånger i månaden',
-      'Prydligt resultat varje gång',
-      'Anpassas efter din tomt',
-      'Perfekt för dig som vill ha det enkelt och snyggt',
+      'Omfattning anpassas efter tomtens storlek',
+      'Tydlig genomgång innan arbetet startar',
+      'Möjlighet till enstaka eller återkommande hjälp',
+      'Prisförslag lämnas innan bokning',
     ],
   },
   {
     name: 'Fönsterservice',
     type: 'Invändig och utvändig fönsterputs som abonnemang',
-    price: '1 399 kr/mån',
-    rows: [],
-    points: ['Alltid rena fönster', 'Noggrann fönsterputs', 'Förtur under högsäsong', 'Tydlig städinformation'],
+    points: ['Upplägg efter antal fönster och behov', 'Noggrann fönsterputs', 'Möjlighet till återkommande service', 'Tydligt prisförslag efter kontakt'],
   },
 ];
 
 const flexibleTabs = {
   Gräsklippning: {
     title: 'Gräsklippning',
-    text: 'Boka gräsklippning i Västerås vid behov utan bindningstid.',
-    price: '349 kr/timme efter RUT',
+    text: 'Boka gräsklippning i Västerås vid behov. Vi går igenom yta, önskat upplägg och hur ofta du vill ha hjälp innan du får ett tydligt prisförslag.',
     points: ['Gräsklippning', 'Busktrimning', 'Ogräsborttagning', 'Gräs och löv tas bort efter jobb'],
   },
   Komplett: {
     title: 'Komplett',
-    text: 'Samlad tomtskötsel och fastighetsnära utomhusservice i Västmanland.',
-    price: '419 kr/timme efter RUT',
+    text: 'Samlad tomtskötsel och fastighetsnära utomhusservice i Västmanland. Upplägget anpassas efter fastighetens behov, säsong och omfattning.',
     points: ['Tomtgenomgång', 'Skötselplan', 'Återkommande service', 'Hantering av RUT-avdrag'],
   },
   Fönsterputs: {
     title: 'Fönsterputs',
-    text: 'Enstaka fönsterputs i Västerås när fönstren behöver bli klara igen. Faktureras per påbörjad timme.',
-    price: '349 kr/timme efter RUT',
+    text: 'Enstaka fönsterputs i Västerås när fönstren behöver bli klara igen. Priset baseras på antal fönster, tillgänglighet och vad som ska putsas.',
     points: ['Invändigt och utvändigt', 'Professionell utrustning', 'Noggrann detaljkontroll', 'Bokas vid behov'],
   },
 };
@@ -321,12 +311,6 @@ function App() {
   const [formStatus, setFormStatus] = useState('idle');
   const activeService = flexibleTabs[activeTab];
   const ActiveServiceIcon = flexibleTabIcons[activeTab];
-  const [priceValue, priceUnit] = activeService.price.includes(' ')
-    ? activeService.price.split(/ (.+)/)
-    : [activeService.price, ''];
-  const priceUnitLines = priceUnit.includes(' efter RUT')
-    ? priceUnit.replace(' efter RUT', '\nefter RUT').split('\n')
-    : [priceUnit];
   const isWorkPage = currentHash === workPageHash;
   const activeServicePage = servicePages.find((service) => currentHash === `#${service.slug}`);
 
@@ -460,7 +444,7 @@ function App() {
           <span><img src="/assets/kg-logo-mark.png" alt="" /></span>
           <strong>Tomt & Fönsterservice</strong>
         </a>
-        <div className="nav-links" id="mobile-navigation">
+        <div className="nav-links">
           {navItems.map((item) => (
             <a key={item} href={`#${slugify(item)}`} onClick={() => setMenuOpen(false)}>{item}</a>
           ))}
@@ -474,9 +458,41 @@ function App() {
           Ring oss
         </a>
         <button className="menu-button" type="button" aria-label={menuOpen ? 'Stäng meny' : 'Öppna meny'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>
-          <List size={24} weight="bold" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
         </button>
       </nav>
+      <button className={menuOpen ? 'mobile-menu-backdrop is-open' : 'mobile-menu-backdrop'} type="button" aria-label="Stäng meny" onClick={() => setMenuOpen(false)} />
+      <aside className={menuOpen ? 'mobile-menu-panel is-open' : 'mobile-menu-panel'} id="mobile-navigation" aria-label="Mobil navigation" aria-hidden={!menuOpen}>
+        <div className="mobile-menu-content">
+          <a className="mobile-menu-brand" href="#top" aria-label="KG Tomt & Fönsterservice" onClick={() => setMenuOpen(false)}>
+            <img src="/assets/kg-logo-mark.png" alt="" />
+            <strong>Tomt & Fönsterservice</strong>
+          </a>
+          <button className="mobile-menu-close" type="button" aria-label="Stäng meny" onClick={() => setMenuOpen(false)}>
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </button>
+          <div className="mobile-menu-links">
+            {navItems.map((item) => (
+              <a key={item} href={`#${slugify(item)}`} onClick={() => setMenuOpen(false)}>
+                {item}
+              </a>
+            ))}
+          </div>
+          <div className="mobile-menu-actions">
+            <a className="nav-work" href={workPageHash} onClick={() => setMenuOpen(false)}>
+              <PlayCircle size={22} weight="regular" />
+              Se oss i arbete
+            </a>
+            <a className="nav-call" href={phoneHref} onClick={() => setMenuOpen(false)}>
+              <Phone size={18} weight="bold" />
+              Ring oss
+            </a>
+          </div>
+        </div>
+      </aside>
 
       {isWorkPage ? (
         <WorkVideosSection page />
@@ -496,7 +512,7 @@ function App() {
             <h1>Fönsterputs och tomtskötsel i Västerås & Västmanland</h1>
             <p className="hero-text">KG Tomt & Fönsterservice hjälper dig med trygg och noggrann utomhusservice i Västerås och hela Västmanland.</p>
             <div className="hero-actions" aria-label="Snabba val">
-              <a className="button primary" href="#priser">Se våra paket</a>
+              <a className="button primary" href="#priser">Pris och offert</a>
               <a className="button secondary" href="#kontakt">Kontakta oss</a>
               <a className="button quiet" href="#kontakt">Kostnadsfri offert</a>
             </div>
@@ -550,8 +566,9 @@ function App() {
 
       <section id="priser" className="pricing">
         <div className="pricing-heading">
-          <p className="kicker">Priser</p>
-          <h2>Välj ditt paket</h2>
+          <p className="kicker">Offert</p>
+          <h2>Pris efter dina behov</h2>
+          <p>Varje uppdrag är unikt och priset kan variera beroende på omfattning, storlek och vad du behöver hjälp med. Därför lämnar vi gärna ett personligt prisförslag baserat på just ditt uppdrag.</p>
         </div>
         <div className="pricing-grid reveal">
           <article className="price-card price-card-garden">
@@ -559,26 +576,15 @@ function App() {
               <span>Gräsklippning</span>
             </div>
             <div className="price-body">
-              <h3>Grundservice för gräsklippning</h3>
-              <span className="price-prefix">Från</span>
-              <strong className="price-amount">1 299 kr</strong>
+              <h3>Gräsklippning efter din tomt</h3>
+              <p className="price-copy">Vi anpassar upplägget efter tomtens storlek, skick och hur ofta du vill ha hjälp. Du får ett tydligt prisförslag innan arbetet påbörjas.</p>
               <div className="price-rule" />
-              <div className="price-table">
-                {[
-                  ['0 till 399 kvm:', '1 299 kr'],
-                  ['400 till 699 kvm:', '1 990 kr'],
-                  ['700 till 999 kvm:', '2 690 kr'],
-                  ['1000 till 1500 kvm:', '3 590 kr'],
-                ].map(([size, price]) => (
-                  <p key={size}><span>{size}</span><strong>{price}</strong></p>
-                ))}
-              </div>
               <ul>
                 {packages[0].points.map((point) => (
                   <li key={point}><Check size={18} weight="bold" aria-hidden="true" />{point}</li>
                 ))}
               </ul>
-              <a className="button primary full" href="#kontakt"><CalendarCheck size={20} weight="bold" />Boka kostnadsfri offert</a>
+              <a className="button primary full" href="#kontakt"><CalendarCheck size={20} weight="bold" />Begär offert</a>
             </div>
           </article>
           <article className="price-card price-card-window">
@@ -586,16 +592,15 @@ function App() {
               <span>Invändig och utvändig fönsterputs som abonnemang</span>
             </div>
             <div className="price-body">
-              <h3>Fönsterservice med RUT-avdrag</h3>
-              <span className="price-prefix">Från</span>
-              <strong className="price-amount">1 399 kr<small>/mån</small></strong>
+              <h3>Fönsterservice med personligt upplägg</h3>
+              <p className="price-copy">Antal fönster, åtkomst och önskat intervall påverkar upplägget. Kontakta oss så går vi igenom dina behov och lämnar en tydlig offert.</p>
               <div className="price-rule" />
               <ul>
                 {packages[1].points.map((point) => (
                   <li key={point}><Check size={18} weight="bold" aria-hidden="true" />{point}</li>
                 ))}
               </ul>
-              <a className="button secondary full" href="#kontakt"><CalendarCheck size={20} weight="bold" />Boka kostnadsfri offert</a>
+              <a className="button secondary full" href="#kontakt"><CalendarCheck size={20} weight="bold" />Kontakta oss för pris</a>
             </div>
             <img src="/assets/pricing-window-reference.png" alt="Rent fönster efter fönsterputs i Västerås med grönska utanför" loading="lazy" decoding="async" />
           </article>
@@ -619,27 +624,23 @@ function App() {
               );
             })}
           </div>
-          <p className="flexible-copy">Boka hjälp vid enstaka tillfällen när du behöver extra handräckning. Ingen bindningstid och inga löpande abonnemang.</p>
+          <p className="flexible-copy">Boka hjälp vid enstaka tillfällen när du behöver extra handräckning. Vi stämmer av omfattningen först och återkommer med ett tydligt prisförslag.</p>
         </div>
         <article className="tab-panel" id="flexible-service-panel" role="tabpanel">
           <div className="tab-visual" aria-hidden="true">
             <ActiveServiceIcon size={58} weight="duotone" />
             <span />
           </div>
-          <div className="tab-price">
-            <strong>{priceValue}</strong>
-            {priceUnit && (
-              <span className="tab-price-unit">
-                {priceUnitLines.map((line) => <span key={line}>{line}</span>)}
-              </span>
-            )}
+          <div className="tab-offer">
+            <strong>Personligt prisförslag</strong>
+            <span>efter genomgång av uppdraget</span>
           </div>
           <h3>{activeService.title}</h3>
           <p>{activeService.text}</p>
           <ul>
             {activeService.points.map((point) => <li key={point}><Check size={18} weight="bold" />{point}</li>)}
           </ul>
-          <a className="button secondary full" href="#kontakt" aria-label={`Boka ${activeService.title} i Västerås och Västmanland`}>Boka nu <ArrowRight size={18} weight="bold" /></a>
+          <a className="button secondary full" href="#kontakt" aria-label={`Begär offert för ${activeService.title} i Västerås och Västmanland`}>Begär offert <ArrowRight size={18} weight="bold" /></a>
         </article>
       </section>
 
