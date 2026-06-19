@@ -468,7 +468,6 @@ function App() {
         <div className="mobile-menu-content">
           <a className="mobile-menu-brand" href="#top" aria-label="KG Tomt & Fönsterservice" onClick={() => setMenuOpen(false)}>
             <img src="/assets/kg-logo-mark.png" alt="" />
-            <strong>Tomt & Fönsterservice</strong>
           </a>
           <button className="mobile-menu-close" type="button" aria-label="Stäng meny" onClick={() => setMenuOpen(false)}>
             <span aria-hidden="true" />

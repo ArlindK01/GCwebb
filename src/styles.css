@@ -3224,14 +3224,6 @@ textarea:focus {
     object-fit: contain;
   }
 
-  .mobile-menu-brand strong {
-    max-width: 10.5rem;
-    font-size: 1.08rem;
-    font-weight: 850;
-    line-height: 1.02;
-    letter-spacing: -0.045em;
-  }
-
   .mobile-menu-close {
     position: absolute;
     top: 26px;
