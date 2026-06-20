@@ -1180,7 +1180,7 @@ h1 {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: clamp(2.8rem, 5vw, 4.35rem) max(24px, calc((100vw - 980px) / 2)) clamp(1.45rem, 2.4vw, 2rem);
+  padding: clamp(2.8rem, 5vw, 4.35rem) max(14px, calc((100vw - 1160px) / 2)) clamp(1.45rem, 2.4vw, 2rem);
   background:
     radial-gradient(circle at 50% 0%, rgba(220, 229, 210, 0.48), transparent 36rem),
     linear-gradient(180deg, rgba(251, 250, 246, 0.98) 0%, rgba(251, 250, 246, 0.96) 42%, rgba(251, 250, 246, 0.64) 66%, rgba(251, 250, 246, 0) 78%),
@@ -1206,7 +1206,7 @@ h1 {
   z-index: 0;
   width: min(33vw, 360px);
   height: min(55vw, 610px);
-  content: '';
+  content: none;
   pointer-events: none;
   background:
     linear-gradient(180deg, var(--paper) 0%, rgba(251, 250, 246, 0.86) 10%, rgba(251, 250, 246, 0) 24%),
@@ -1260,10 +1260,10 @@ h1 {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(300px, 0.95fr) minmax(340px, 1.04fr);
-  gap: clamp(0.85rem, 1.8vw, 1.35rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.95rem, 1.6vw, 1.35rem);
   align-items: stretch;
-  max-width: 980px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -1271,12 +1271,27 @@ h1 {
   position: relative;
   display: grid;
   overflow: hidden;
-  min-height: 470px;
+  min-height: 535px;
   padding: 0;
   border: 1px solid rgba(23, 53, 41, 0.18);
   border-radius: 16px;
   background: #fbfaf6;
   box-shadow: 0 16px 44px rgba(24, 43, 32, 0.13);
+}
+
+@media (min-width: 981px) {
+  .price-card {
+    height: clamp(535px, 43vw, 575px);
+    min-height: 0;
+  }
+
+  .price-body h3 {
+    min-height: 2.1em;
+  }
+
+  .price-copy {
+    min-height: 5em;
+  }
 }
 
 .price-band {
@@ -1422,19 +1437,18 @@ h1 {
   height: 17px;
 }
 
-.price-card-garden {
-  grid-template-rows: auto minmax(0, 1fr);
-}
-
+.price-card-garden,
 .price-card-window {
-  grid-template-columns: minmax(0, 0.72fr) minmax(135px, 0.36fr);
+  grid-template-columns: minmax(0, 1fr) clamp(210px, 40%, 270px);
   grid-template-rows: auto minmax(0, 1fr);
 }
 
+.price-card-garden .price-band,
 .price-card-window .price-band {
   grid-column: 1 / -1;
 }
 
+.price-card-garden > img,
 .price-card-window > img {
   grid-column: 2;
   grid-row: 2;
@@ -1449,6 +1463,16 @@ h1 {
   object-position: center;
 }
 
+.price-card-garden > img {
+  object-position: 42% center;
+}
+
+.price-card-window > img {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.price-card-garden .price-body,
 .price-card-window .price-body {
   grid-column: 1;
   grid-row: 2;
@@ -2035,6 +2059,57 @@ h1 {
 }
 
 @media (max-width: 1280px) {
+  .pricing::after {
+    top: 9.5rem;
+    bottom: 0;
+    width: min(38vw, 390px);
+    height: auto;
+    background:
+      linear-gradient(180deg, var(--paper) 0%, rgba(251, 250, 246, 0.72) 8%, rgba(251, 250, 246, 0) 22%),
+      url('/assets/pricing-lawn-mower.png') left 58% / cover no-repeat;
+  }
+
+  .price-body {
+    padding: 1.15rem 1.25rem 1.15rem;
+  }
+
+  .price-body h3 {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: clamp(1.42rem, 2.05vw, 1.85rem);
+    line-height: 1.02;
+  }
+
+  .price-copy {
+    font-size: 0.88rem;
+    line-height: 1.48;
+  }
+
+  .price-card ul {
+    margin: 8px 0 12px;
+  }
+
+  .price-card li {
+    padding: 5px 0;
+    font-size: 0.79rem;
+    line-height: 1.32;
+  }
+
+  .price-rule {
+    margin: 10px 0;
+  }
+
+  .price-card .button {
+    min-height: 42px;
+    font-size: 0.84rem;
+  }
+
+  .price-card-garden,
+  .price-card-window {
+    grid-template-columns: minmax(0, 1fr) clamp(195px, 39%, 235px);
+  }
+
   .rut-section {
     width: min(1180px, calc(100% - 36px));
     grid-template-columns: minmax(480px, 0.95fr) minmax(540px, 1.05fr);
@@ -2688,9 +2763,14 @@ textarea:focus {
   }
 
   .pricing::after {
-    top: 11rem;
-    width: min(42vw, 320px);
+    top: 9.5rem;
+    bottom: 0;
+    width: min(50vw, 360px);
+    height: auto;
     opacity: 0.72;
+    background:
+      linear-gradient(180deg, var(--paper) 0%, rgba(251, 250, 246, 0.72) 8%, rgba(251, 250, 246, 0) 22%),
+      url('/assets/pricing-lawn-mower.png') left 58% / cover no-repeat;
   }
 
   .pricing-grid {
@@ -2711,8 +2791,9 @@ textarea:focus {
     border-radius: 24px;
   }
 
+  .price-card-garden,
   .price-card-window {
-    grid-template-columns: minmax(0, 1fr) minmax(140px, 0.38fr);
+    grid-template-columns: minmax(300px, 1fr) clamp(190px, 38%, 240px);
   }
 
   .about {
@@ -2920,9 +3001,13 @@ textarea:focus {
 
   .pricing::after {
     top: 8.75rem;
+    bottom: 0;
     width: min(54vw, 250px);
-    height: 410px;
+    height: auto;
     opacity: 0.28;
+    background:
+      linear-gradient(180deg, var(--paper) 0%, rgba(251, 250, 246, 0.72) 8%, rgba(251, 250, 246, 0) 22%),
+      url('/assets/pricing-lawn-mower.png') left 58% / cover no-repeat;
   }
 
   .pricing-heading h2 {
@@ -2933,15 +3018,19 @@ textarea:focus {
     min-height: auto;
   }
 
+  .price-card-garden,
   .price-card-window {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: minmax(0, 1fr) clamp(92px, 30vw, 150px);
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
+  .price-card-garden > img,
   .price-card-window > img {
-    grid-column: 1;
-    grid-row: 3;
-    min-height: 220px;
+    grid-column: 2;
+    grid-row: 2;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
   }
 
   .price-band {
@@ -3313,22 +3402,26 @@ textarea:focus {
     min-width: 0;
   }
 
+  .price-card-garden,
   .price-card-window {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto;
+    grid-template-columns: minmax(0, 1fr) clamp(92px, 30vw, 150px);
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
+  .price-card-garden .price-body,
   .price-card-window .price-body {
     grid-column: 1;
     grid-row: 2;
   }
 
+  .price-card-garden > img,
   .price-card-window > img {
-    grid-column: 1;
-    grid-row: 3;
-    height: clamp(220px, 56vw, 360px);
-    min-height: 0;
-    max-height: 360px;
+    grid-column: 2;
+    grid-row: 2;
+    align-self: stretch;
+    height: 100%;
+    min-height: 100%;
+    max-height: none;
     object-fit: cover;
     object-position: center;
   }
@@ -3565,22 +3658,26 @@ textarea:focus {
 }
 
 @media (max-width: 640px) {
+  .price-card-garden,
   .price-card-window {
-    grid-template-columns: minmax(0, 0.7fr) minmax(86px, 0.3fr);
+    grid-template-columns: minmax(0, 1fr) clamp(86px, 30vw, 118px);
     grid-template-rows: auto minmax(0, 1fr);
   }
 
+  .price-card-garden .price-band,
   .price-card-window .price-band {
     grid-column: 1 / -1;
     grid-row: 1;
   }
 
+  .price-card-garden .price-body,
   .price-card-window .price-body {
     grid-column: 1;
     grid-row: 2;
-    padding-right: 0.95rem;
+    padding: 1.05rem 0.95rem 1.05rem 1rem;
   }
 
+  .price-card-garden > img,
   .price-card-window > img {
     grid-column: 2;
     grid-row: 2;
@@ -3593,6 +3690,7 @@ textarea:focus {
     object-position: center;
   }
 
+  .price-card-garden .price-body h3,
   .price-card-window .price-body h3 {
     font-size: clamp(1.28rem, 7vw, 1.8rem);
   }
@@ -3601,18 +3699,22 @@ textarea:focus {
     font-size: clamp(1.95rem, 10vw, 2.85rem);
   }
 
+  .price-card-garden li,
   .price-card-window li {
     font-size: 0.78rem;
   }
 }
 
 @media (max-width: 360px) {
+  .price-card-garden,
   .price-card-window {
-    grid-template-columns: minmax(0, 0.68fr) minmax(78px, 0.32fr);
+    grid-template-columns: minmax(0, 1fr) 78px;
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
+  .price-card-garden .price-body,
   .price-card-window .price-body {
-    padding: 1rem 0.75rem 1rem 1rem;
+    padding: 0.95rem 0.75rem 0.95rem 0.9rem;
   }
 }
 

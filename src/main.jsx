@@ -585,6 +585,7 @@ function App() {
               </ul>
               <a className="button primary full" href="#kontakt"><CalendarCheck size={20} weight="bold" />Begär offert</a>
             </div>
+            <img src="/assets/pricing-lawn-mower.png" alt="Gräsklippare på välskött gräsmatta" loading="lazy" decoding="async" />
           </article>
           <article className="price-card price-card-window">
             <div className="price-band price-band-light">
